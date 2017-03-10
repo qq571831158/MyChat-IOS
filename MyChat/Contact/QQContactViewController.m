@@ -12,6 +12,8 @@
 #import "AFNetworking.h"
 #import "MJExtension.h"
 #import "QQFriendModel.h"
+#import "QQChatFriendInfoViewController.h"
+#import "QQUtils.h"
 @interface QQContactViewController ()
 @property(nonatomic,strong)NSArray *friendArray;
 @end
@@ -55,6 +57,7 @@
     [mgr GET:@"http://182.254.152.99:8080/MyChat1/user/friend" parameters:paras success:^(AFHTTPRequestOperation *operation , NSDictionary *responseObject){
         NSArray *resultArray = responseObject[@"contents"];
         self.friendArray = [QQFriendModel objectArrayWithKeyValuesArray:resultArray];
+        
         [self.tableView reloadData];
         [control endRefreshing];
     }failure:^(AFHTTPRequestOperation *operation ,NSError *error){
@@ -70,12 +73,20 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     QQFriendModel *friend = self.friendArray[indexPath.row];
+    NSString *imageName = [NSString stringWithFormat:@"%@.jpg",friend.username];
+    NSString *path = NSHomeDirectory();
+    // 得到本地沙盒中名为"MyImage"的路径，"MyImage"是保存的图片名
+    NSString *imageFilePath = [path stringByAppendingPathComponent:@"Documents"];
+    NSString *filepath = [imageFilePath stringByAppendingPathComponent:imageName];
+    NSString *imagePath = [QQUtils saveDefaultImageWithUrl:friend.user_picture imageName:imageName];
+    friend.user_picture = imagePath;
     static NSString *ID = @"QQContacts";
     ContactViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (!cell) {
         cell = [[ContactViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
-    cell.iconImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:friend.user_picture]]];
+    cell.iconImageView.image = [[UIImage alloc]initWithContentsOfFile:friend.user_picture];
+    //[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:friend.user_picture]]];
     cell.nameLabel.text = friend.nickname;
     
     return cell;
@@ -83,8 +94,15 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     QQFriendModel *friend = self.friendArray[indexPath.row];
-    ChatViewController *chat = [[ChatViewController alloc]init];
-    chat.name = friend.nickname;
+    NSString *imageName = [NSString stringWithFormat:@"%@.jpg",friend.username];
+    NSLog(@"%@",imageName);
+    NSString *imagePath = [QQUtils saveDefaultImageWithUrl:friend.user_picture imageName:imageName];
+    friend.user_picture = imagePath;
+    NSLog(@"%@",friend);
+    NSLog(@"%@,%@,%@",friend.username,friend.user_picture,friend.nickname);
+    QQChatFriendInfoViewController *chat = [[QQChatFriendInfoViewController alloc]init];
+    chat.friend = friend;
+    chat.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:chat animated:YES];
 }
 @end

@@ -52,6 +52,8 @@
 		182C32291E726B6000286602 /* QQMeTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 182C32281E726B6000286602 /* QQMeTableViewController.storyboard */; };
 		182C322B1E7282E600286602 /* IMG_0001.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 182C322A1E7282E600286602 /* IMG_0001.JPG */; };
 		182C322E1E728E0400286602 /* QQUserinfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 182C322D1E728E0400286602 /* QQUserinfoModel.m */; };
+		182C32361E731A1100286602 /* QQChatFriendInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 182C32351E731A1100286602 /* QQChatFriendInfoViewController.m */; };
+		182C32381E731A1C00286602 /* QQChatFriendInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 182C32371E731A1C00286602 /* QQChatFriendInfoViewController.storyboard */; };
 		1886D7E21E6F01EC0024937E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1886D7E11E6F01EC0024937E /* main.m */; };
 		1886D7E51E6F01EC0024937E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1886D7E41E6F01EC0024937E /* AppDelegate.m */; };
 		1886D7ED1E6F01EC0024937E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1886D7EC1E6F01EC0024937E /* Assets.xcassets */; };
@@ -268,6 +270,9 @@
 		182C322A1E7282E600286602 /* IMG_0001.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_0001.JPG; sourceTree = "<group>"; };
 		182C322C1E728E0400286602 /* QQUserinfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QQUserinfoModel.h; sourceTree = "<group>"; };
 		182C322D1E728E0400286602 /* QQUserinfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QQUserinfoModel.m; sourceTree = "<group>"; };
+		182C32341E731A1100286602 /* QQChatFriendInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QQChatFriendInfoViewController.h; sourceTree = "<group>"; };
+		182C32351E731A1100286602 /* QQChatFriendInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QQChatFriendInfoViewController.m; sourceTree = "<group>"; };
+		182C32371E731A1C00286602 /* QQChatFriendInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QQChatFriendInfoViewController.storyboard; sourceTree = "<group>"; };
 		1886D7DD1E6F01EC0024937E /* MyChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1886D7E11E6F01EC0024937E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1886D7E31E6F01EC0024937E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
@@ -1060,6 +1065,9 @@
 			children = (
 				1886D98D1E6F2B750024937E /* ChatViewController.h */,
 				1886D98E1E6F2B750024937E /* ChatViewController.m */,
+				182C32341E731A1100286602 /* QQChatFriendInfoViewController.h */,
+				182C32351E731A1100286602 /* QQChatFriendInfoViewController.m */,
+				182C32371E731A1C00286602 /* QQChatFriendInfoViewController.storyboard */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1305,6 +1313,7 @@
 				1886D9551E6F181F0024937E /* Me.xcassets in Resources */,
 				182C321F1E71503400286602 /* QQLoginViewController.xib in Resources */,
 				1886D9591E6F181F0024937E /* test3.jpg in Resources */,
+				182C32381E731A1C00286602 /* QQChatFriendInfoViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1348,6 +1357,7 @@
 				182C320E1E710F1A00286602 /* IQUITextFieldView+Additions.m in Sources */,
 				1886D8E21E6F043C0024937E /* SDWebImageManager.m in Sources */,
 				1886D8D01E6F043C0024937E /* MJArgument.m in Sources */,
+				182C32361E731A1100286602 /* QQChatFriendInfoViewController.m in Sources */,
 				1886D8C81E6F043C0024937E /* AFSecurityPolicy.m in Sources */,
 				1886D8D21E6F043C0024937E /* MJFoundation.m in Sources */,
 				1886D8EA1E6F043C0024937E /* UIView+WebCacheOperation.m in Sources */,

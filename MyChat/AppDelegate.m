@@ -10,6 +10,7 @@
 #import "QQTabbarViewController.h"
 #import "IQKeyboardManager.h"
 #import "QQLoginViewController.h"
+#import "QQUtils.h"
 @interface AppDelegate ()
 
 @end
@@ -27,8 +28,15 @@
     
     //2.显示窗口
     [self.window  makeKeyAndVisible];
+    
     //3.设置根控制器
-    self.window.rootViewController = [[QQLoginViewController alloc]init];
+    if([QQUtils getDefaultUserNameWithplistname:@"userinfo.plist"]){
+        self.window.rootViewController = [[QQTabbarViewController alloc]init];
+    }
+    else{
+        self.window.rootViewController = [[QQLoginViewController alloc]init];
+    }
+    
 
     return YES;
 }

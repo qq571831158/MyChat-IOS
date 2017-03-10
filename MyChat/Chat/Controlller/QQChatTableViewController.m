@@ -42,7 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setView];
-    self.title = self.model.name;
+    self.title = self.friend.nickname;
 //    NSURL *url = [NSURL URLWithString:@"http://localhost:8080/websocket/cheng"];
     NSURL *url = [NSURL URLWithString:@"http://182.254.152.99:8080/MyChat1/websocket/cheng"];
     _socket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:url]];

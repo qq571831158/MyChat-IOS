@@ -59,7 +59,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     QQHomeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     QQChatTableViewController *chat = [[QQChatTableViewController alloc]init];
-    chat.model = cell.model;
+//    chat.model = cell.model;
     chat.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:chat animated:YES];
 }
