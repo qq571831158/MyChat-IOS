@@ -18,7 +18,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.tableView.delaysContentTouches = NO;
+    
+    self.tableView.delaysContentTouches = NO;
+    for (id obj in self.tableView.subviews)
+    {
+        if ([NSStringFromClass([obj class]) isEqualToString:@"UITableViewCellScrollView"])
+            
+        {
+            UIScrollView *scroll = (UIScrollView *) obj;
+            
+            scroll.delaysContentTouches =NO;
+            break;
+            
+        }
+    }
+    NSLog(@"%@",self.tableView.subviews);
     self.imageView.layer.cornerRadius = 5;
     self.imageView.clipsToBounds = YES;
     self.imageView.image = [[UIImage alloc]initWithContentsOfFile:self.friend.user_picture];
@@ -27,21 +41,29 @@
     self.usernameLabel.text = self.friend.username;
     self.tableView.tableFooterView = [UIView new];
 }
-- (IBAction)sendMessage:(id)sender {
-    NSLog(@"执行了该方法");
+- (void)sendMessage {
     QQChatTableViewController *chat = [[QQChatTableViewController alloc]init];
     chat.friend = self.friend;
     chat.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:chat animated:YES];
 }
 
-- (IBAction)btn:(id)sender {
-    NSLog(@"被点击了");
+
+- (IBAction)sendVideo {
+    NSLog(@"视频聊天");
 }
 
-- (IBAction)sendVideo:(id)sender {
-}
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section ==3) {
+        if (indexPath.row ==0) {
+            [self sendMessage];
+        }
+        else{
+            [self sendVideo];
+        }
+    }
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 20;

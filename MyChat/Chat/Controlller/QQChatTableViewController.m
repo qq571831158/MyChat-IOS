@@ -14,22 +14,11 @@
 #import "QQUtils.h"
 #define SDColor(r, g, b, a) [UIColor colorWithRed:(r / 255.0) green:(g / 255.0) blue:(b / 255.0) alpha:a]
 @interface QQChatTableViewController ()
-
+@property(nonatomic,strong)NSString *userName;
+@property(nonatomic,strong)NSDictionary *userinfo;
 @end
 
 @implementation QQChatTableViewController
-
-//- (void)viewWillAppear:(BOOL)animated{
-//    
-//    self.tabBarController.tabBar.hidden = YES;
-//    
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated{
-//    
-//    self.tabBarController.tabBar.hidden = NO;
-//    
-//}
 
 - (NSMutableArray *)dataArray
 {
@@ -43,8 +32,12 @@
     [super viewDidLoad];
     [self setView];
     self.title = self.friend.nickname;
-//    NSURL *url = [NSURL URLWithString:@"http://localhost:8080/websocket/cheng"];
-    NSURL *url = [NSURL URLWithString:@"http://182.254.152.99:8080/MyChat1/websocket/cheng"];
+    _userinfo = [QQUtils getDefaultUserNameWithplistname:@"userinfo.plist"];
+    _userName = _userinfo[@"username"];
+    //    NSURL *url = [NSURL URLWithString:@"http://localhost:8080/websocket/cheng"];
+    NSString *urlString = [NSString stringWithFormat:@"http://182.254.152.99:8080/MyChat1/websocket/%@",_userName];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
     _socket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:url]];
     _socket.delegate = self;
     [_socket open];
@@ -76,7 +69,7 @@
     QQChatModel *model = [QQChatModel new];
     model.messageType = 1;
     model.text = message;
-    model.iconName =@"1.jpg";
+    model.iconName = self.friend.user_picture;
 //    model.imageName = @"test0.jpg";
     [self.dataArray addObject:model];
     [self.tableView reloadData];
@@ -86,13 +79,13 @@
     QQChatModel *model = [QQChatModel new];
     model.messageType = 0;
     model.text = message;
-    model.iconName =@"2.jpg";
+    model.iconName = self.userinfo[@"user_picture"];
 //    model.imageName = @"test2.jpg";
     [self.dataArray addObject:model];
     [self.tableView reloadData];
     QQChatSendMessageModel *sendMsg = [QQChatSendMessageModel new];
-    sendMsg.toUser = @"piaoxuehua";
-    sendMsg.fromUser = @"cheng";
+    sendMsg.toUser = self.friend.username;
+    sendMsg.fromUser = _userName;
     sendMsg.message = message;
     NSDictionary *dict = sendMsg.keyValues;
     [_socket send:[QQUtils dictionaryToJson:dict]];

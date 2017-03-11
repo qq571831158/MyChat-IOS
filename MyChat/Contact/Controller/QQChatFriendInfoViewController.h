@@ -14,8 +14,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 @property (nonatomic, strong)QQFriendModel *friend;
-- (IBAction)sendMessage:(id)sender;
-- (IBAction)btn:(id)sender;
-
-- (IBAction)sendVideo:(id)sender;
 @end

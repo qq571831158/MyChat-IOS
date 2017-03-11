@@ -53,7 +53,8 @@
 -(void)getFriendInfo:(UIRefreshControl *)control{
     AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
     NSMutableDictionary *paras = [NSMutableDictionary dictionary];
-    paras[@"username"] =@"cheng";
+    NSDictionary *userinfo = [QQUtils getDefaultUserNameWithplistname:@"userinfo.plist"];
+    paras[@"username"] = userinfo[@"username"];
     [mgr GET:@"http://182.254.152.99:8080/MyChat1/user/friend" parameters:paras success:^(AFHTTPRequestOperation *operation , NSDictionary *responseObject){
         NSArray *resultArray = responseObject[@"contents"];
         self.friendArray = [QQFriendModel objectArrayWithKeyValuesArray:resultArray];

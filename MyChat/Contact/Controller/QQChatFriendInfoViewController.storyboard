@@ -119,39 +119,36 @@
                             </tableViewSection>
                             <tableViewSection id="zBV-h3-5A7">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="vHF-kT-AhE">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="55" id="VMs-wM-sG4">
                                         <rect key="frame" x="0.0" y="311" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vHF-kT-AhE" id="h7G-wN-HYV">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y5e-VO-O78">
-                                                    <rect key="frame" x="20" y="8" width="335" height="44.5"/>
-                                                    <color key="backgroundColor" red="0.35246452689170837" green="0.73120158910751343" blue="0.07739364355802536" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <state key="normal" title="发消息"/>
-                                                    <connections>
-                                                        <action selector="sendMessage:" destination="2FL-8g-9ZY" eventType="touchUpOutside" id="SoQ-82-cLv"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                            <constraints>
-                                                <constraint firstItem="Y5e-VO-O78" firstAttribute="top" secondItem="h7G-wN-HYV" secondAttribute="top" constant="5" id="1OW-Tn-HVn"/>
-                                                <constraint firstAttribute="trailing" secondItem="Y5e-VO-O78" secondAttribute="trailing" constant="20" id="Che-kA-WAs"/>
-                                                <constraint firstItem="Y5e-VO-O78" firstAttribute="leading" secondItem="h7G-wN-HYV" secondAttribute="leading" constant="20" id="ehQ-gq-tTr"/>
-                                                <constraint firstAttribute="bottom" secondItem="Y5e-VO-O78" secondAttribute="bottom" constant="5" id="iiu-8D-RLc"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="55" id="VMs-wM-sG4">
-                                        <rect key="frame" x="0.0" y="366" width="375" height="55"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VMs-wM-sG4" id="04Y-d6-Mg0">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="VMs-wM-sG4" id="04Y-d6-Mg0">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6S1-l3-qvn">
+                                                    <rect key="frame" x="20" y="6" width="335" height="44.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.38901248574256897" green="0.80162549018859863" blue="0.083856917917728424" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <state key="normal" title="发消息">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="sendVideo:" destination="2FL-8g-9ZY" eventType="touchUpOutside" id="Fyr-K7-hsZ"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="55" id="2H2-Mz-NAD">
+                                        <rect key="frame" x="0.0" y="366" width="375" height="55"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="2H2-Mz-NAD" id="9vw-U8-jW8">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAn-KH-nBI">
                                                     <rect key="frame" x="20" y="6" width="335" height="44.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -159,7 +156,7 @@
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="sendVideo:" destination="2FL-8g-9ZY" eventType="touchUpOutside" id="Fyr-K7-hsZ"/>
+                                                        <action selector="sendVideo:" destination="2FL-8g-9ZY" eventType="touchUpOutside" id="iRy-dP-ieX"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
