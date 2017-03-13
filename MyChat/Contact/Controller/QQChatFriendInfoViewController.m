@@ -8,6 +8,7 @@
 
 #import "QQChatFriendInfoViewController.h"
 #import "QQChatTableViewController.h"
+#import "QQUtils.h"
 @implementation QQChatFriendInfoViewController
 
 - (instancetype)initWithStyle:(UITableViewStyle)style
@@ -32,10 +33,11 @@
             
         }
     }
-    NSLog(@"%@",self.tableView.subviews);
     self.imageView.layer.cornerRadius = 5;
     self.imageView.clipsToBounds = YES;
-    self.imageView.image = [[UIImage alloc]initWithContentsOfFile:self.friend.user_picture];
+    NSString *user_picture = [QQUtils getDefaultImageWithName:self.friend.username imagePath:@"friendinfo"];
+    NSString *url=[NSString stringWithFormat:@"%@.jpg",user_picture];
+    self.imageView.image = [[UIImage alloc]initWithContentsOfFile:url];
     self.nameLabel.text = self.friend.nickname;
     self.nicknameLabel.text = self.friend.nickname;
     self.usernameLabel.text = self.friend.username;

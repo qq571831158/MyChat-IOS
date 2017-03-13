@@ -10,8 +10,12 @@
 
 @interface QQUtils : NSObject
 +(NSString*)dictionaryToJson:(NSDictionary *)dic;
-+(NSDictionary *)getDefaultUserNameWithplistname:(NSString *)plistName;
-+(void)saveDefaultWithData:(NSDictionary *)data plistName:(NSString *)plistName;
-+(NSString *)saveDefaultImageWithUrl:(NSString *)url imageName:(NSString *)imageName;
-+(BOOL) isFileExist:(NSString *)fileName;
++(NSDictionary *)getDefaultWithplistName:(NSString *)plistName dir:(NSString *)dir;
++(void)saveDefaultWithData:(NSDictionary *)data plistName:(NSString *)plistName dir:(NSString *)dir;
++(void)saveDefaultImageWithUrl:(NSString *)url imageName:(NSString *)imageName imagePath:(NSString *)imagePath;
++(BOOL) isFileExist:(NSString *)fileName dir:(NSString *)dir;
++(NSString *)getDefaultImageWithName:(NSString *)imageName imagePath:(NSString *)imagePath;
++(void)saveChattingRecord:(NSMutableArray *)array withWho:(NSString *)username dir:(NSString *)dir;
++(NSMutableArray *)getRecordWithName:(NSString *)username dir:(NSString *)dir;
++(void)createDir;
 @end

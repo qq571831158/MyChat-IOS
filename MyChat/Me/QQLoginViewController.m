@@ -11,6 +11,7 @@
 #import "QQUserinfoModel.h"
 #import "MJExtension.h"
 #import "QQTabbarViewController.h"
+#import "QQUtils.h"
 @interface QQLoginViewController ()
 
 @end
@@ -36,10 +37,11 @@
         NSString *message = [responseObject valueForKey:@"message"];
         if ([code isEqualToString:@"S01"]) {
             NSDictionary *dict = responseObject[@"contents"];
-            NSString *imageUrl = [self saveDefaultImageWithUrl:dict[@"user_picture"]];
-            QQUserinfoModel *model = [QQUserinfoModel initWithDict:dict imageUrl:imageUrl];
+            NSString *username = [NSString stringWithFormat:@"%@.jpg",dict[@"username"]];
+            [QQUtils saveDefaultImageWithUrl:dict[@"user_picture"] imageName:username imagePath:@"userinfo"];
+            QQUserinfoModel *model = [QQUserinfoModel initWithDict:dict];
             NSDictionary *userinfo = model.keyValues;
-            [self saveDefaultWithData:userinfo plistName:@"userinfo.plist"];
+            [QQUtils saveDefaultWithData:userinfo plistName:@"userinfo.plist" dir:@"userinfo"];
             QQTabbarViewController *tab = [[QQTabbarViewController alloc]init];
             [self presentViewController:tab animated:YES completion:nil];
             
@@ -51,30 +53,8 @@
         NSLog(@"%@", error);
     }];
 }
--(NSString *)saveDefaultImageWithUrl:(NSString *)url{
-    UIImage *imgFromUrl =[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-    NSLog(@"%@",imgFromUrl);
-    // 本地沙盒目录
-    NSString *path = NSHomeDirectory();
-    // 得到本地沙盒中名为"MyImage"的路径，"MyImage"是保存的图片名
-    NSString *imageFilePath = [path stringByAppendingPathComponent:@"Documents"];
-     NSString *filepath = [imageFilePath stringByAppendingPathComponent:@"my.jpg"];
-    // 将取得的图片写入本地的沙盒中，其中0.5表示压缩比例，1表示不压缩，数值越小压缩比例越大
-    BOOL succuss = [UIImageJPEGRepresentation(imgFromUrl, 1) writeToFile:filepath atomically:YES];
-    if(succuss)
-        NSLog(@"写入本地成功");
-    return filepath;
-}
--(void)saveDefaultWithData:(NSDictionary *)data plistName:(NSString *)plistName{
-    // 1.获得沙盒根路径
-    NSString *home = NSHomeDirectory();
-    // 2.document路径
-    NSString *docPath = [home stringByAppendingPathComponent:@"Documents"];
-    
-    NSString *filepath = [docPath stringByAppendingPathComponent:plistName];
-    
-    [data writeToFile:filepath atomically:YES];
-    
-}
+
+
+
 
 @end

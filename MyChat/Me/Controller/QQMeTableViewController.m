@@ -21,9 +21,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSDictionary *dict = [QQUtils getDefaultUserNameWithplistname:@"userinfo.plist"];
+    NSDictionary *dict = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
     self.username.text = dict[@"username"];
-    NSString *url=[NSString stringWithFormat:@"%@", dict[@"user_picture"]];
+    NSString *user_picture = [QQUtils getDefaultImageWithName:dict[@"username"] imagePath:@"userinfo"];
+    NSLog(@"cccccccc----------%@",user_picture);
+    NSString *url=[NSString stringWithFormat:@"%@.jpg",user_picture];
     self.imageView.image = [[UIImage alloc]initWithContentsOfFile:url];
     self.nickname.text = dict[@"nickname"];
     self.imageView.layer.cornerRadius = 5;

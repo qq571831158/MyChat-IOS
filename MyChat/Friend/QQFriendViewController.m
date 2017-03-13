@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    NSDictionary *dict = [QQUtils getDefaultUserNameWithplistname:@"userinfo.plist"];
+    NSDictionary *dict = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
     NSLog(@"从沙盒取得的数据%@",dict);
     _username = [[UILabel alloc]init];
     _username.frame = CGRectMake(100, 300, 100, 20);

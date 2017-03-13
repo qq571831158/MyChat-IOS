@@ -8,7 +8,7 @@
 
 #import "QQChatTableViewCell.h"
 #import "UIView+SDAutoLayout.h"
-
+#import "QQUtils.h"
 #define kLabelMargin 20.f
 #define kLabelTopMargin 8.f
 #define kLabelBottomMargin 20.f
@@ -22,7 +22,6 @@
 
 #define kMaxChatImageViewWidth 200.f
 #define kMaxChatImageViewHeight 300.f
-
 @interface QQChatTableViewCell()<TTTAttributedLabelDelegate>
 
 @property (nonatomic, strong) UIView *container;
@@ -77,11 +76,21 @@
 
 - (void)setModel:(QQChatModel *)model
 {
+    NSString *user_picture = nil;
     _model = model;
-    
     _label.text = model.text;
-    self.iconImageView.image = [UIImage imageNamed:model.iconName];
+    if ([model.messageType  isEqual: @"0"]) {
+        user_picture = [QQUtils getDefaultImageWithName:model.iconName imagePath:@"userinfo"];
+    }
+    else {
+         user_picture = [QQUtils getDefaultImageWithName:model.iconName imagePath:@"friendinfo"];
+        
+    }
+    NSLog(@"%@",user_picture);
+    NSLog(@"------------------%@",model.iconName);
+    NSString *url=[NSString stringWithFormat:@"%@.jpg",user_picture];
     
+    self.iconImageView.image = [[UIImage alloc]initWithContentsOfFile:url];
     // 根据model设置cell左浮动或者右浮动样式
     [self setMessageOriginWithModel:model];
     
@@ -129,7 +138,7 @@
         }];
         
     } else if (model.text) { // 没有图片有文字情况下设置文字自动布局
-        
+    
         // 清除展示图片时候用到的mask
         [_container.layer.mask removeFromSuperlayer];
         
@@ -157,7 +166,9 @@
 
 - (void)setMessageOriginWithModel:(QQChatModel *)model
 {
-    if (model.messageType == SDMessageTypeSendToOthers) {
+
+    if ([model.messageType  isEqual: @"0"]) {
+      
         // 发出去的消息设置居右样式
         self.iconImageView.sd_resetLayout
         .rightSpaceToView(self.contentView, kChatCellItemMargin)
@@ -168,8 +179,7 @@
         _container.sd_resetLayout.topEqualToView(self.iconImageView).rightSpaceToView(self.iconImageView, kChatCellItemMargin);
         
         _containerBackgroundImageView.image = [[UIImage imageNamed:@"SenderTextNodeBkg"] stretchableImageWithLeftCapWidth:50 topCapHeight:30];
-    } else if (model.messageType == SDMessageTypeSendToMe) {
-        
+    } else if ([model.messageType  isEqual: @"1"]) {
         // 收到的消息设置居左样式
         self.iconImageView.sd_resetLayout
         .leftSpaceToView(self.contentView, kChatCellItemMargin)

@@ -25,12 +25,12 @@
     manager.enableAutoToolbar = NO;//这个是它自带键盘工具条开关
     self.window = [[UIWindow alloc]init];
     self.window.frame = [UIScreen mainScreen].bounds;
-    
+    [QQUtils createDir];
     //2.显示窗口
     [self.window  makeKeyAndVisible];
     
     //3.设置根控制器
-    if([QQUtils getDefaultUserNameWithplistname:@"userinfo.plist"]){
+    if([QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"]){
         self.window.rootViewController = [[QQTabbarViewController alloc]init];
     }
     else{

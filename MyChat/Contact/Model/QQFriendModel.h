@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface QQFriendModel : NSObject
+@interface QQFriendModel : NSObject<NSCoding>
 /** 好友用户名 */
 @property (nonatomic, copy) NSString *username;
 /** 好友图片 */

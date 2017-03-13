@@ -9,12 +9,12 @@
 #import "QQUserinfoModel.h"
 
 @implementation QQUserinfoModel
-+(instancetype)initWithDict:(NSDictionary *)dict imageUrl:(NSString *)url{
++(instancetype)initWithDict:(NSDictionary *)dict{
     QQUserinfoModel *model = [[QQUserinfoModel alloc]init];
     model.username = dict[@"username"];
     model.sessionID = dict[@"sessionID"];
     model.nickname = dict[@"nickname"];
-    model.user_picture = url;
+    model.user_picture = dict[@"user_picture"];
     return model;
 }
 @end

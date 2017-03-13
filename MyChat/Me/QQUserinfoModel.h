@@ -13,5 +13,5 @@
 @property (nonatomic, strong) NSString *nickname;
 @property (nonatomic, strong) NSString *user_picture;
 @property (nonatomic, strong) NSString *sessionID;
-+(instancetype)initWithDict:(NSDictionary *)dict imageUrl:(NSString *)url;
++(instancetype)initWithDict:(NSDictionary *)dict;
 @end

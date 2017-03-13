@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef enum : NSUInteger {
-    SDMessageTypeSendToOthers,
-    SDMessageTypeSendToMe
-} SDMessageType;
-@interface QQChatModel : NSObject
-@property (nonatomic, assign) SDMessageType messageType;
+//typedef enum : NSUInteger {
+//    SDMessageTypeSendToOthers,
+//    SDMessageTypeSendToMe
+//} SDMessageType;
+@interface QQChatModel : NSObject<NSCoding>
+@property (nonatomic, assign)NSString *messageType;
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, copy) NSString *iconName;
 @property (nonatomic, copy) NSString *imageName;
