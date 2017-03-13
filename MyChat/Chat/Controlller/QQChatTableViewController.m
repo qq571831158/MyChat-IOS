@@ -32,38 +32,54 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = self.friend.nickname;
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(more) image:@"contacts_add_friend" highlightedImage:@"contacts_add_friend"];
+
     [self setView];
-//    [self loadUnReadMessage];
+    [self loadUnReadMessage];
     [self setContent];
     [self initWebsocket];
     
 
 }
+-(void)more{
+//    [self webSocket:_socket didCloseWithCode:1 reason:@"主动断臂" wasClean:YES];
+        _socket.close;
+}
 -(void)loadUnReadMessage{
-   
+    _userinfo = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
     AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
     mgr.responseSerializer = [AFJSONResponseSerializer serializer];
     mgr.requestSerializer=[AFJSONRequestSerializer serializer];
     NSMutableDictionary *paras = [NSMutableDictionary dictionary];
     paras[@"username"] = _userinfo[@"username"];
     paras[@"sessionID"]= _userinfo[@"sessionID"];
+    paras[@"fromUser"] = self.friend.username;
     NSLog(@"%@",paras);
-    [mgr POST:@"http://182.254.152.99:8080/MyChat1/message/getUnReadMessage" parameters:paras success:^(AFHTTPRequestOperation
+    NSString *urlString = @"http://182.254.152.99:8080/MyChat1/message/getUnReadMessage";
+//        NSString *urlString = @"http://localhost:8080/message/getUnReadMessage";
+    [mgr POST:urlString parameters:paras success:^(AFHTTPRequestOperation
                                                                                           *operation , NSDictionary  *responseObject){
         NSLog(@"%@",responseObject);
+        NSMutableArray *writeArray = [NSMutableArray array];
+        NSMutableArray *readArray = [QQUtils getRecordWithName:[NSString stringWithFormat:@"%@.txt",self.friend.username]dir:@"chattingRecord"];
+        [writeArray addObjectsFromArray:readArray];
         NSString *code = [responseObject valueForKey:@"code"];
         NSString *message = [responseObject valueForKey:@"message"];
         if ([code isEqualToString:@"S01"]) {
+            [self updateStatus];
             NSArray *array = responseObject[@"contents"];
             for (int i=0; i<array.count; i++) {
                 NSDictionary *dict = array[i];
-                NSString *message = dict[@"message"];
-                NSString *fromUser = [NSString stringWithFormat:@"%@.txt",dict[@"fromUser"]];
-                [self saveUnReadMessage:message fromWho:fromUser];
+                QQChatModel *model = [QQChatModel new];
+                model.text = dict[@"message"];
+                model.iconName = dict[@"fromUser"];
+                model.messageType = @"1";
+                [writeArray addObject:model];
             }
-            
-            NSMutableArray *arra2y = [QQUtils getRecordWithName:@"cheng" dir:@"chattingRecord"];
-            NSLog(@"%@",arra2y);
+            [self saveChattingRecord:writeArray withWho:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
+            NSMutableArray *array2 = [QQUtils getRecordWithName:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
+            [self.dataArray addObjectsFromArray:array2];
+            [self.tableView reloadData];
         }
         else{
             NSLog(@"%@",message);
@@ -73,19 +89,34 @@
     }];
 
 }
-- (void)initWebsocket{
-     _userinfo = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
-    _userName = _userinfo[@"username"];
-    //    NSURL *url = [NSURL URLWithString:@"http://localhost:8080/websocket/cheng"];
-    NSString *urlString = [NSString stringWithFormat:@"http://182.254.152.99:8080/MyChat1/websocket/%@",_userName];
-    NSURL *url = [NSURL URLWithString:urlString];
-    _socket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:url]];
-    _socket.delegate = self;
-    [_socket open];
+-(void)updateStatus{
+    _userinfo = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
+    AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
+    mgr.responseSerializer = [AFJSONResponseSerializer serializer];
+    mgr.requestSerializer=[AFJSONRequestSerializer serializer];
+    NSMutableDictionary *paras = [NSMutableDictionary dictionary];
+    paras[@"username"] = _userinfo[@"username"];
+    paras[@"sessionID"]= _userinfo[@"sessionID"];
+    paras[@"fromUser"] = self.friend.username;
+    NSLog(@"%@",paras);
+        NSString *urlString = @"http://182.254.152.99:8080/MyChat1/message/getUnReadMessage";
+//    NSString *urlString = @"http://localhost:8080/message/updateStatus";
+    [mgr POST:urlString parameters:paras success:^(AFHTTPRequestOperation
+                                                   *operation , NSDictionary  *responseObject){
+        NSString *code = [responseObject valueForKey:@"code"];
+        NSString *message = [responseObject valueForKey:@"message"];
+        if ([code isEqualToString:@"S01"]) {
+            NSLog(@"更新成功");
+        }
+        else{
+            NSLog(@"%@",message);
+        }
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"%@", error);
+    }];
 }
-
 -(void)setContent{
-    NSMutableArray *array = [QQUtils getRecordWithName:self.friend.username dir:@"chattingRecord"];
+    NSMutableArray *array = [QQUtils getRecordWithName:[NSString stringWithFormat:@"%@.txt",self.friend.username]dir:@"chattingRecord"];
     
     if (array.count) {
         [self.dataArray addObjectsFromArray:array];
@@ -95,7 +126,16 @@
     }
     
 }
-
+- (void)initWebsocket{
+     _userinfo = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
+    _userName = _userinfo[@"username"];
+//        NSString *urlString = [NSString stringWithFormat:@"http://localhost:8080/websocket/%@",_userName];
+    NSString *urlString = [NSString stringWithFormat:@"http://182.254.152.99:8080/MyChat1/websocket/%@",_userName];
+    NSURL *url = [NSURL URLWithString:urlString];
+    _socket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:url]];
+    _socket.delegate = self;
+    [_socket open];
+}
 -(void)setView{
     _tableView = [[UITableView alloc]init];
     _tableView.frame = CGRectMake(0, 0, 375, 620);
@@ -125,11 +165,13 @@
     model.iconName = self.friend.username;
     [self.dataArray addObject:model];
     [self.tableView reloadData];
-    [self saveChattingRecord:self.dataArray withWho:self.friend.username dir:@"chattingRecord"];
+    [self saveChattingRecord:self.dataArray withWho:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
 }
 
 
 -(void)sendData:(NSString *)message{
+//    NSMutableArray *array2 = [QQUtils getRecordWithName:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
+//    [self.dataArray addObjectsFromArray:array2];
     QQChatModel *model = [QQChatModel new];
     model.messageType = @"0";
     model.text = message;
@@ -137,7 +179,7 @@
     [self.dataArray addObject:model];
     [self.tableView reloadData];
     [self reloadAfterMessage:YES];
-    [self saveChattingRecord:self.dataArray withWho:self.friend.username dir:@"chattingRecord"];
+    [self saveChattingRecord:self.dataArray withWho:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
     QQChatSendMessageModel *sendMsg = [QQChatSendMessageModel new];
     sendMsg.toUser = self.friend.username;
     sendMsg.fromUser = _userName;
@@ -197,50 +239,11 @@
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:show];
         }
     });
-    
-    
 }
--(void)saveUnReadMessage:(NSString *)message fromWho:(NSString *)username{
-    NSArray *paths  = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-    NSString *homePath = [paths objectAtIndex:0];
-    
-    NSString *filePath = [homePath stringByAppendingPathComponent:[NSString stringWithFormat:@"chattingRecord/%@",username ]];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    if(![fileManager fileExistsAtPath:filePath]) //如果不存在
-    {
-        NSLog(@"das");
-//        NSLog(@"-------文件不存在，写入文件----------");
-//        NSError *error;
-//        if([string writeToFile:filePath atomically:YESencoding:NSUTF8StringEncodingerror:&error])
-//        {
-//            NSLog(@"------写入文件------success");
-//        }
-//        else
-//        {
-//            NSLog(@"------写入文件------fail,error==%@",error);
-//        }
-    }
-    else//追加写入文件，而不是覆盖原来的文件
-    {
-        NSLog(@"-------文件存在，追加文件----------");
-        NSFileHandle *fileHandle = [NSFileHandle fileHandleForUpdatingAtPath:filePath];
-        
-        [fileHandle seekToEndOfFile];  //将节点跳到文件的末尾
-        
-        
-        NSData* stringData  = [message dataUsingEncoding:NSUTF8StringEncoding];
-        
-        [fileHandle writeData:stringData]; //追加写入数据
-        
-        [fileHandle closeFile];
-    }
-}
+
 -(void)saveChattingRecord:(NSMutableArray *)array withWho:(NSString *)username dir:(NSString *)dir{
     NSArray *path =  NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *fileName = [path.firstObject stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.txt",dir,username]];
+    NSString *fileName = [path.firstObject stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@",dir,username]];
     NSLog(@"%@",fileName);
     BOOL success = [NSKeyedArchiver archiveRootObject:array toFile:fileName];
     if(success){
@@ -250,5 +253,6 @@
         NSLog(@"归档失败");
     }
 }
+
 
 @end

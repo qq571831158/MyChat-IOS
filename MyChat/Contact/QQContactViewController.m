@@ -29,12 +29,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(more) image:@"contacts_add_friend" highlightedImage:@"contacts_add_friend"];
-    if(![QQUtils isFileExist:@"friendinfo.plist" dir:@"friendinfo"]){
+    if(![QQUtils isFileExist:@"friendinfo.txt" dir:@"friendinfo"]){
             [self setupRefresh];
+        //[self getFriendInfo];
     }
     else{
-            self.array = [QQUtils getRecordWithName:@"friendinfo.plist" dir:@"friendinfo"];
-                [self.tableView reloadData];
+            self.array = [QQUtils getRecordWithName:@"friendinfo.txt" dir:@"friendinfo"];
+            [self.tableView reloadData];
     }
     self.tableView.rowHeight = [ContactViewCell fixedHeight];
     self.tableView.sectionIndexColor = [UIColor lightGrayColor];
@@ -62,7 +63,9 @@
     NSMutableDictionary *paras = [NSMutableDictionary dictionary];
     NSDictionary *userinfo = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
     paras[@"username"] = userinfo[@"username"];
-    [mgr GET:@"http://182.254.152.99:8080/MyChat1/user/friend" parameters:paras success:^(AFHTTPRequestOperation *operation , NSDictionary *responseObject){
+    NSString *url = @"http://182.254.152.99:8080/MyChat1/user/friend";
+//    NSString *url = @"http://localhost:8080/user/friend";
+    [mgr GET:url parameters:paras success:^(AFHTTPRequestOperation *operation , NSDictionary *responseObject){
         NSArray *resultArray = responseObject[@"contents"];
         self.friendArray = [QQFriendModel objectArrayWithKeyValuesArray:resultArray];
         for (int i=0; i<self.friendArray.count; i++) {
@@ -70,8 +73,8 @@
             NSString *imageName = [NSString stringWithFormat:@"%@.jpg",friend.username];
             [QQUtils saveDefaultImageWithUrl:friend.user_picture imageName:imageName imagePath:@"friendinfo"];
         }
-        [QQUtils saveChattingRecord:self.friendArray withWho:@"friendinfo.plist" dir:@"friendinfo"];
-        self.array = [QQUtils getRecordWithName:@"friendinfo.plist" dir:@"friendinfo"];
+        [QQUtils saveChattingRecord:self.friendArray withWho:@"friendinfo.txt" dir:@"friendinfo"];
+        self.array = [QQUtils getRecordWithName:@"friendinfo.txt" dir:@"friendinfo"];
         [self.tableView reloadData];
         [control endRefreshing];
     }failure:^(AFHTTPRequestOperation *operation ,NSError *error){
@@ -82,7 +85,7 @@
 }
 #pragma mark -Tableview Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.friendArray.count;
+    return self.array.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

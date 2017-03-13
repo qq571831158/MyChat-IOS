@@ -31,7 +31,9 @@
     paras[@"username"] = self.username.text;
     paras[@"password"]= self.password.text;
     NSLog(@"%@",paras);
-    [mgr POST:@"http://182.254.152.99:8080/MyChat1/user/login" parameters:paras success:^(AFHTTPRequestOperation
+    NSString *url =@"http://182.254.152.99:8080/MyChat1/user/login";
+//    NSString *url = @"http://localhost:8080/user/login";
+    [mgr POST:url parameters:paras success:^(AFHTTPRequestOperation
                                                                              *operation , NSDictionary  *responseObject){
         NSString *code = [responseObject valueForKey:@"code"];
         NSString *message = [responseObject valueForKey:@"message"];

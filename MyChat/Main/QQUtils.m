@@ -64,10 +64,10 @@
 
 +(void)saveChattingRecord:(NSMutableArray *)array withWho:(NSString *)username dir:(NSString *)dir{
     //写入到沙盒
-    if (![self isFileExist:[NSString stringWithFormat:@"%@.txt",username] dir:dir]) {
+    if (![self isFileExist:[NSString stringWithFormat:@"%@",username] dir:dir]) {
         NSArray *path =  NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         
-        NSString *fileName = [path.firstObject stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.txt",dir,username]];
+        NSString *fileName = [path.firstObject stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@",dir,username]];
         NSLog(@"%@",fileName);
         BOOL success = [NSKeyedArchiver archiveRootObject:array toFile:fileName];
         if(success){
@@ -83,7 +83,7 @@
 +(NSMutableArray *)getRecordWithName:(NSString *)username dir:(NSString *)dir{
     NSMutableArray *array = [NSMutableArray array];
     NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    NSString *newFilePath = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.txt",dir,username]];
+    NSString *newFilePath = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@",dir,username]];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if([fileManager fileExistsAtPath:newFilePath]){
         array = [NSKeyedUnarchiver unarchiveObjectWithFile:newFilePath];
