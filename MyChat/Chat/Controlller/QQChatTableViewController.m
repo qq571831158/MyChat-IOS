@@ -13,10 +13,12 @@
 #import "MJExtension.h"
 #import "AFNetworking.h"
 #import "QQUtils.h"
+#import "MBProgressHUD.h"
 #define SDColor(r, g, b, a) [UIColor colorWithRed:(r / 255.0) green:(g / 255.0) blue:(b / 255.0) alpha:a]
 @interface QQChatTableViewController ()
 @property(nonatomic,strong)NSString *userName;
 @property(nonatomic,strong)NSDictionary *userinfo;
+@property(nonatomic,retain)MBProgressHUD *HUD;
 @end
 
 @implementation QQChatTableViewController
@@ -32,20 +34,44 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = self.friend.nickname;
+//    [UIBarButtonItem ]
+//    self.navigationItem.leftBarButtonItem =[UIBarButtonItem itemWithTarget:self action:@selector(more) image:@"navigationbar_back.png" highlightedImage:@"navigationbar_back_highlighted.png"];
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(more) image:@"contacts_add_friend" highlightedImage:@"contacts_add_friend"];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(execute:)
+                                                 name:@"RECEIVE_MESSAGE" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enter:)
+                                                 name:@"enter" object:nil];
     [self setView];
-    [self loadUnReadMessage];
-    [self setContent];
+    [self loadUnReadMessage:YES];
+//    [self setContent];
     [self initWebsocket];
     
 
 }
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (![[self.navigationController viewControllers] containsObject:self])
+    {
+        _socket.close;
+        NSLog(@"用户点击了返回按钮");
+    }
+}
+-(void)execute:(NSNotification *)notification{
+    NSLog(@"执行程序进入后台，断开socket");
+    _socket.close;
+}
+-(void)enter:(NSNotification *)notification{
+    [self initWebsocket];
+//    [self loadUnReadMessage:NO];
+    
+}
 -(void)more{
 //    [self webSocket:_socket didCloseWithCode:1 reason:@"主动断臂" wasClean:YES];
         _socket.close;
+    [self.navigationController popViewControllerAnimated:YES];
 }
--(void)loadUnReadMessage{
+-(void)loadUnReadMessage:(BOOL)content{
     _userinfo = [QQUtils getDefaultWithplistName:@"userinfo.plist" dir:@"userinfo"];
     AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
     mgr.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -77,9 +103,18 @@
                 [writeArray addObject:model];
             }
             [self saveChattingRecord:writeArray withWho:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
-            NSMutableArray *array2 = [QQUtils getRecordWithName:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
-            [self.dataArray addObjectsFromArray:array2];
-            [self.tableView reloadData];
+            if (content) {
+                [self setContent];
+            }
+//            NSMutableArray *array2 = [QQUtils getRecordWithName:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
+//            [self.dataArray addObjectsFromArray:array2];
+//            [self.tableView reloadData];
+        }
+        else if([code isEqualToString:@"S02"]){
+            if (content) {
+                 [self setContent];
+            }
+       
         }
         else{
             NSLog(@"%@",message);
@@ -99,7 +134,7 @@
     paras[@"sessionID"]= _userinfo[@"sessionID"];
     paras[@"fromUser"] = self.friend.username;
     NSLog(@"%@",paras);
-        NSString *urlString = @"http://182.254.152.99:8080/MyChat1/message/getUnReadMessage";
+        NSString *urlString = @"http://182.254.152.99:8080/MyChat1/message/updateStatus";
 //    NSString *urlString = @"http://localhost:8080/message/updateStatus";
     [mgr POST:urlString parameters:paras success:^(AFHTTPRequestOperation
                                                    *operation , NSDictionary  *responseObject){
@@ -172,20 +207,40 @@
 -(void)sendData:(NSString *)message{
 //    NSMutableArray *array2 = [QQUtils getRecordWithName:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
 //    [self.dataArray addObjectsFromArray:array2];
-    QQChatModel *model = [QQChatModel new];
-    model.messageType = @"0";
-    model.text = message;
-    model.iconName = _userName;
-    [self.dataArray addObject:model];
-    [self.tableView reloadData];
-    [self reloadAfterMessage:YES];
-    [self saveChattingRecord:self.dataArray withWho:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
-    QQChatSendMessageModel *sendMsg = [QQChatSendMessageModel new];
-    sendMsg.toUser = self.friend.username;
-    sendMsg.fromUser = _userName;
-    sendMsg.message = message;
-    NSDictionary *dict = sendMsg.keyValues;
-    [_socket send:[QQUtils dictionaryToJson:dict]];
+    if (_socket.readyState ==1) {
+        QQChatModel *model = [QQChatModel new];
+        model.messageType = @"0";
+        model.text = message;
+        model.iconName = _userName;
+        [self.dataArray addObject:model];
+        [self.tableView reloadData];
+        [self reloadAfterMessage:YES];
+        [self saveChattingRecord:self.dataArray withWho:[NSString stringWithFormat:@"%@.txt",self.friend.username] dir:@"chattingRecord"];
+        QQChatSendMessageModel *sendMsg = [QQChatSendMessageModel new];
+        sendMsg.toUser = self.friend.username;
+        sendMsg.fromUser = _userName;
+        sendMsg.message = message;
+        NSDictionary *dict = sendMsg.keyValues;
+         [_socket send:[QQUtils dictionaryToJson:dict]];
+    }
+    else{
+        _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        _HUD.delegate = self;
+        
+        //常用的设置
+        //小矩形的背景色
+        _HUD.color = [UIColor redColor];//这儿表示无背景
+        //显示的文字
+        _HUD.labelText = @"连接断开";
+        _HUD.labelColor = [UIColor blackColor];
+        //细节文字
+        _HUD.detailsLabelText = @"你的连接断开，请返回一次重新连接";
+        _HUD.detailsLabelColor = [UIColor blackColor];
+        //是否有庶罩  
+        _HUD.dimBackground = YES;
+        [_HUD hide:YES afterDelay:3];
+    }
+   
 
 }
 #pragma -mark tableView datasoure
@@ -220,11 +275,25 @@
 
 -(void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error{
     NSLog(@"连接失败");
+    [self setContent];
+    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _HUD.delegate = self;
+    
+    //常用的设置
+    //小矩形的背景色
+    _HUD.color = [UIColor clearColor];//这儿表示无背景
+    //显示的文字
+    _HUD.labelText = @"无网络连接";
+    _HUD.labelColor = [UIColor blackColor];
+    //是否有庶罩
+    _HUD.dimBackground = YES;
+    [_HUD hide:YES afterDelay:3];
     
 }
 -(void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean{
     [_socket send:@"断开"];
-    NSLog(@"连接断开，情况socket");
+    NSLog(@"连接断开，清空socket");
+    _socket.close;
 }
 -(void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
     [self loadData:[NSString stringWithFormat:@"%@",message]];

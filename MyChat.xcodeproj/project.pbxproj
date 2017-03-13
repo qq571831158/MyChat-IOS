@@ -54,6 +54,8 @@
 		182C322E1E728E0400286602 /* QQUserinfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 182C322D1E728E0400286602 /* QQUserinfoModel.m */; };
 		182C32361E731A1100286602 /* QQChatFriendInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 182C32351E731A1100286602 /* QQChatFriendInfoViewController.m */; };
 		182C32381E731A1C00286602 /* QQChatFriendInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 182C32371E731A1C00286602 /* QQChatFriendInfoViewController.storyboard */; };
+		18393D881E76AFE300A46104 /* navigationbar_back_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 18393D861E76AFE300A46104 /* navigationbar_back_highlighted.png */; };
+		18393D891E76AFE300A46104 /* navigationbar_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 18393D871E76AFE300A46104 /* navigationbar_back.png */; };
 		1886D7E21E6F01EC0024937E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1886D7E11E6F01EC0024937E /* main.m */; };
 		1886D7E51E6F01EC0024937E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1886D7E41E6F01EC0024937E /* AppDelegate.m */; };
 		1886D7ED1E6F01EC0024937E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1886D7EC1E6F01EC0024937E /* Assets.xcassets */; };
@@ -273,6 +275,8 @@
 		182C32341E731A1100286602 /* QQChatFriendInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QQChatFriendInfoViewController.h; sourceTree = "<group>"; };
 		182C32351E731A1100286602 /* QQChatFriendInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QQChatFriendInfoViewController.m; sourceTree = "<group>"; };
 		182C32371E731A1C00286602 /* QQChatFriendInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QQChatFriendInfoViewController.storyboard; sourceTree = "<group>"; };
+		18393D861E76AFE300A46104 /* navigationbar_back_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_back_highlighted.png; sourceTree = "<group>"; };
+		18393D871E76AFE300A46104 /* navigationbar_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_back.png; sourceTree = "<group>"; };
 		1886D7DD1E6F01EC0024937E /* MyChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1886D7E11E6F01EC0024937E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1886D7E31E6F01EC0024937E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
@@ -910,6 +914,8 @@
 		1886D8EE1E6F04560024937E /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				18393D861E76AFE300A46104 /* navigationbar_back_highlighted.png */,
+				18393D871E76AFE300A46104 /* navigationbar_back.png */,
 				182C322A1E7282E600286602 /* IMG_0001.JPG */,
 				1886D8FE1E6F181E0024937E /* cell_icons */,
 				1886D91C1E6F181E0024937E /* Contacts.xcassets */,
@@ -1274,6 +1280,7 @@
 				1886D9581E6F181F0024937E /* test2.jpg in Resources */,
 				182C319E1E70F66A00286602 /* MLEmoji_ExpressionImage.plist in Resources */,
 				1886D94E1E6F181E0024937E /* icon2.jpg in Resources */,
+				18393D881E76AFE300A46104 /* navigationbar_back_highlighted.png in Resources */,
 				1886D9451E6F181E0024937E /* 3.jpg in Resources */,
 				1886D9641E6F181F0024937E /* pic8.jpg in Resources */,
 				1886D9601E6F181F0024937E /* pic4.jpg in Resources */,
@@ -1286,6 +1293,7 @@
 				1886D95E1E6F181F0024937E /* pic2.jpg in Resources */,
 				1886D95B1E6F181F0024937E /* pbg.jpg in Resources */,
 				1886D9361E6F181E0024937E /* 10.jpg in Resources */,
+				18393D891E76AFE300A46104 /* navigationbar_back.png in Resources */,
 				1886D95A1E6F181F0024937E /* test4.jpg in Resources */,
 				1886D9501E6F181F0024937E /* icon4.jpg in Resources */,
 				1886D9651E6F181F0024937E /* picon.jpg in Resources */,

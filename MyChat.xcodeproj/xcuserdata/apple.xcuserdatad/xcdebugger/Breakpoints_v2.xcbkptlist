@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyChat/Chat/Controlller/QQChatTableViewController.m"
-            timestampString = "511090915.50917"
+            timestampString = "511097740.957088"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "-loadUnReadMessage"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "-loadUnReadMessage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyChat/Chat/Controlller/QQChatTableViewController.m"
-            timestampString = "511091689.313228"
+            timestampString = "511097740.957088"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "-setContent"
             landmarkType = "7">
          </BreakpointContent>
